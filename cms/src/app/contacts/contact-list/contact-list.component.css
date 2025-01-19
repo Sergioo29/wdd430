@@ -1,0 +1,18 @@
+.panel-body {
+    padding: 20px;
+  }
+  
+  .media {
+    margin-bottom: 20px;
+  }
+  
+  .media-left img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+  }
+  
+  .media-body h4 {
+    margin-top: 0;
+  }
+  
