@@ -6,10 +6,9 @@
       <h2>contact-detail goes here</h2>
     </div>
   </div> -->
-  <div>
-    <app-contact-list></app-contact-list>
-    <app-contact-detail></app-contact-detail>
+  <app-contact-list (selectedContactEvent)="onContactSelected($event)"></app-contact-list>
 
-  </div>
-  
+<app-contact-detail *ngIf="selectedContact" [contact]="selectedContact"></app-contact-detail>
+
+
   

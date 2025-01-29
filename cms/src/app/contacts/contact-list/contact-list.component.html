@@ -1,7 +1,19 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">Contacts</h3>
-    <a href="#" class="btn btn-primary">Create New Contact</a>
+    
+    <ng-container *ngFor="let contact of contacts">
+      <app-contact-item 
+        [contact]="contact" 
+        (click)="onSelected(contact)">
+      </app-contact-item>
+    </ng-container>
+    
+    
+    <button class="btn btn-primary">Create New Contact</button>
+    
+
+    
   </div>
   <div class="panel-body">
     <div *ngFor="let contact of contacts" class="media">
