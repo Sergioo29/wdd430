@@ -6,9 +6,10 @@ import { Document } from '../document.model';
   selector: 'app-document-item',
   standalone: true,
   imports: [CommonModule],
+  template: `<div>{{ document?.title }}</div>`,
   templateUrl: './document-item.component.html',
   styleUrls: ['./document-item.component.css']
 })
 export class DocumentItemComponent {
-  @Input() document!: Document; // Ensure this input property is present
+  @Input() document: any; // Accepts document data
 }
