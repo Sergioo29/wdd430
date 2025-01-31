@@ -1,12 +1,24 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MessageItemComponent } from '../message-item/message-item.component';
+import { MessageEditComponent } from '../message-edit/message-edit.component';
+import { Message } from '../message.model';
 
 @Component({
-  selector: 'cms-message-list',
+  selector: 'app-message-list',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, MessageItemComponent, MessageEditComponent],
   templateUrl: './message-list.component.html',
-  styleUrl: './message-list.component.css'
+  styleUrls: ['./message-list.component.css']
 })
 export class MessageListComponent {
+  messages: Message[] = [];
 
+  onMessageAdded(newMessage: Message) {
+    this.messages.push(newMessage);
+  }
+
+  onAddMessage(newMessage: Message) {
+    this.messages.push(newMessage);
+  }
 }

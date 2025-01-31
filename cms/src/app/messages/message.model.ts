@@ -1,7 +1,8 @@
 export class Message {
-   constructor(
-     public sender: string,
-     public msgText: string
-   ) {}
- }
- 
+  constructor(
+    public id: string,
+    public sender: string,
+    public subject: string,
+    public msgText: string
+  ) {}
+}
