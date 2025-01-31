@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Message } from '../message.model';
 
@@ -10,28 +10,32 @@ import { Message } from '../message.model';
   styleUrls: ['./message-edit.component.css']
 })
 export class MessageEditComponent {
-  @ViewChild('subject') subjectInputRef!: ElementRef;
-  @ViewChild('msgText') msgTextInputRef!: ElementRef;
+  @ViewChild('subject') subjectInput!: ElementRef;
+  @ViewChild('msgText') msgTextInput!: ElementRef;
+  
   @Output() addMessageEvent = new EventEmitter<Message>();
 
-  currentSender: string = 'Sergio Henrique da Silva'; // Your name
+  currentSender: string = "Sergio Henrique da Silva"; // Change this to your name
 
   onSendMessage() {
-    const subjectValue = this.subjectInputRef.nativeElement.value;
-    const msgTextValue = this.msgTextInputRef.nativeElement.value;
+    const subject = this.subjectInput.nativeElement.value;
+    const msgText = this.msgTextInput.nativeElement.value;
 
-    if (!subjectValue || !msgTextValue) {
-      return; // Prevent sending empty messages
-    }
+    if (!subject || !msgText) return;
 
-    const newMessage = new Message('1', this.currentSender, subjectValue, msgTextValue);
+    const newMessage = new Message(
+      Math.random().toString(), // Generate a random ID
+      this.currentSender,
+      subject,
+      msgText
+    );
+
     this.addMessageEvent.emit(newMessage);
-
-    this.onClear(); // Clear the form after sending
+    this.onClear();
   }
 
   onClear() {
-    this.subjectInputRef.nativeElement.value = '';
-    this.msgTextInputRef.nativeElement.value = '';
+    this.subjectInput.nativeElement.value = "";
+    this.msgTextInput.nativeElement.value = "";
   }
 }
