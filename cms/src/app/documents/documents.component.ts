@@ -1,20 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DocumentService } from './document.service';
+import { Document } from './document.model';
 import { CommonModule } from '@angular/common';
-import { Document } from './document.model'; // Adjusted path
-import { DocumentListComponent } from './document-list/document-list.component'; // Adjusted path
-import { DocumentDetailComponent } from './document-detail/document-detail.component'; // Adjusted path
+import { DocumentListComponent } from './document-list/document-list.component';
 
 @Component({
   selector: 'app-documents',
   standalone: true,
-  imports: [CommonModule, DocumentListComponent, DocumentDetailComponent],
+  imports: [CommonModule, DocumentListComponent],
   templateUrl: './documents.component.html',
   styleUrls: ['./documents.component.css']
 })
-export class DocumentsComponent {
+export class DocumentsComponent implements OnInit {
   selectedDocument!: Document;
 
-  onDocumentSelected(document: Document) {
-    this.selectedDocument = document;
+  constructor(private documentService: DocumentService) {}
+
+  ngOnInit() {
+    // ✅ Subscribe to the documentSelectedEvent in the DocumentService
+    this.documentService.documentSelectedEvent.subscribe(
+      (document: Document) => {
+        this.selectedDocument = document; // ✅ Assign the selected document
+      }
+    );
   }
 }
