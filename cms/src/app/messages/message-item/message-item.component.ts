@@ -1,6 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Message } from '../message.model'; // Ensure correct import path
+import { Message } from '../message.model';
+import { ContactService } from '../../contacts/contact.service';
+import { Contact } from '../../contacts/contact.model';
 
 @Component({
   selector: 'app-message-item',
@@ -9,6 +11,17 @@ import { Message } from '../message.model'; // Ensure correct import path
   templateUrl: './message-item.component.html',
   styleUrls: ['./message-item.component.css']
 })
-export class MessageItemComponent {
-  @Input() message!: Message; // Input variable for receiving message data
+export class MessageItemComponent implements OnInit {
+  @Input() message!: Message;
+  messageSender: string = '';
+
+  constructor(private contactService: ContactService) {}
+
+  ngOnInit() {
+    const contact: Contact | null = this.contactService.getContact(this.message.sender);
+    if (contact !== null) {
+      this.messageSender = contact.name;
+    }
+  }
+  
 }
