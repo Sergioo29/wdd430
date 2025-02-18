@@ -1,25 +1,26 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule, NgFor } from '@angular/common';
 import { Contact } from '../contact.model';
 import { ContactItemComponent } from '../contact-item/contact-item.component';
+import { ContactService } from '../contact.service';
 
 @Component({
   selector: 'app-contact-list',
   standalone: true,
-  imports: [CommonModule, ContactItemComponent],
+  imports: [CommonModule, ContactItemComponent, NgFor],
   templateUrl: './contact-list.component.html',
   styleUrls: ['./contact-list.component.css']
 })
-export class ContactListComponent {
-  @Output() selectedContactEvent = new EventEmitter<Contact>();  // EventEmitter for selected contact
+export class ContactListComponent implements OnInit {
+  contacts: Contact[] = []; // Initialize with an empty array
 
-  contacts: Contact[] = [
-    new Contact("1", "R. Kent Jackson", "jacksonk@byui.edu", "208-496-3771", "../../assets/images/jacksonk.jpg", []),
-    new Contact("2", "Rex Barzee", "barzeer@byui.edu", "208-496-3768", "../../assets/images/barzeer.jpg", [])
-  ];
+  constructor(private contactService: ContactService) {}
 
-  // Method to emit the selected contact
-  onSelected(contact: Contact): void {
-    this.selectedContactEvent.emit(contact);  // Emit the selected contact
+  ngOnInit() {
+    this.contacts = this.contactService.getContacts(); // Fetch contacts from service
+  }
+
+  onSelected(contact: Contact) {
+    this.contactService.contactSelectedEvent.next(contact);
   }
 }
