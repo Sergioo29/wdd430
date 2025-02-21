@@ -14,3 +14,14 @@
   padding-left:1rem;
   padding-right:1rem;
 }
+
+.panel-body{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.datest{
+  border: 2px solid black;
+  padding: 20px 5px;
+}

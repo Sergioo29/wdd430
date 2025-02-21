@@ -1,9 +1,24 @@
+.panel-heading{
+  display: flex;
+  justify-content: space-around;
+}
+
+.panel-title{
+  font-weight: bold;
+  font-size: 200%;
+}
+
 .panel-body {
     padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
   }
   
   .media {
     margin-bottom: 20px;
+    border: 2px solid black;
+    padding: 5px;
   }
   
   .media-left img {
@@ -15,4 +30,7 @@
   .media-body h4 {
     margin-top: 0;
   }
+
+
+
   

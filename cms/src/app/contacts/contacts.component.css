@@ -1,0 +1,7 @@
+.contactPage{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    align-items: center;
+   
+}
