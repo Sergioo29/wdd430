@@ -14,6 +14,7 @@ export class MessageService {
   }
 
   getMessages(): Message[] {
+    console.log('Mock Messages:', this.messages);
     return this.messages.slice(); // Return a copy
   }
 
