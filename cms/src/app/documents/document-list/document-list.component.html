@@ -6,13 +6,8 @@
     </div>
   </div>
   <div class="panel-body">
-  
-      <div *ngFor="let document of documents" class="datest">
-        <app-document-item 
-          [document]="document" 
-          (click)="onSelectedDocument(document)">
-        </app-document-item>
-      </div>
-    
+    <div *ngFor="let document of documents" class="datest" (click)="onSelectedDocument(document)">
+      <app-document-item [document]="document"></app-document-item>
+    </div>
   </div>
 </div>

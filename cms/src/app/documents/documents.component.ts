@@ -17,10 +17,10 @@ export class DocumentsComponent implements OnInit {
   constructor(private documentService: DocumentService) {}
 
   ngOnInit() {
-    // ✅ Subscribe to the documentSelectedEvent in the DocumentService
-    this.documentService.documentSelectedEvent.subscribe(
-      (document: Document) => {
-        this.selectedDocument = document; // ✅ Assign the selected document
+    // Subscribe to the documentSelectedEvent in the DocumentService
+    this.documentService.documentSelectedEvent.subscribe((document: Document) => {
+      console.log('Document received in DocumentComponent:', document);   
+      this.selectedDocument = document; // Assign the selected document
       }
     );
   }
