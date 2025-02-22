@@ -20,6 +20,10 @@
     border: 2px solid black;
     padding: 5px;
   }
+  .media:hover{
+    cursor: pointer;
+    background-color: rgb(194, 194, 194);
+  }
   
   .media-left img {
     width: 64px;
