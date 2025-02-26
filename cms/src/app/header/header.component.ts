@@ -9,9 +9,5 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./header.component.css']  // Fixed "styleUrls"
 })
 export class HeaderComponent {
-  @Output() selectedFeatureEvent = new EventEmitter<string>(); // Moved inside the class
-
-  onSelected(selectedEvent: string) {
-    this.selectedFeatureEvent.emit(selectedEvent);  // Moved inside the class
-  }
+  constructor() {};
 }
