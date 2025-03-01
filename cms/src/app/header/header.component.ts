@@ -1,13 +1,18 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'cms-header',
   standalone: true,
-  imports: [CommonModule],  // Import CommonModule if needed
+  imports: [CommonModule],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']  // Fixed "styleUrls"
+  styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-  constructor() {};
+  constructor(private router: Router) {}
+
+  onNavigate(route: string) {
+    this.router.navigate([route]);
+  }
 }
