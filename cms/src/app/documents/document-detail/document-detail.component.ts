@@ -3,11 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentService } from '../document.service';
 import { Document } from '../document.model';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router'; // ✅ Import RouterModule
 
 @Component({
   selector: 'app-document-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule], // ✅ Add RouterModule here
   templateUrl: './document-detail.component.html',
   styleUrls: ['./document-detail.component.css']
 })
