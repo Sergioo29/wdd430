@@ -29,4 +29,11 @@ export class DocumentDetailComponent implements OnInit {
       }
     });
   }
+
+  deleteDocument() {
+    if (!this.document) return;
+  
+    this.documentService.deleteDocument(this.document.id); // ✅ Remove document
+    this.router.navigate(['/documents']); // ✅ Navigate back to the list
+  }
 }

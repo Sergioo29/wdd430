@@ -20,4 +20,9 @@ export class DocumentService {
   getDocument(id: string): Document | null {
     return this.documents.find(doc => doc.id === id) || null;
   }
+
+  deleteDocument(id: string) {
+    this.documents = this.documents.filter(doc => doc.id !== id);
+  }
+  
 }
