@@ -1,27 +1,17 @@
-<div class="panel panel-default" xmlns="http://www.w3.org/1999/html">
+<div class="panel panel-default" *ngIf="document">
   <div class="panel-heading">
-    <div class="row pad-all">
-      <h4 class="title margin-left-right">{{ document?.name }}</h4>
-      <div class="row pull-right margin-left-right">
-        <a class="btn btn-primary" [href]="document?.url" target="_blank">View</a>
-        <a class="btn btn-info">Edit</a>
-        <a class="btn btn-danger">Delete</a>
-      </div>
+    <h4 class="title">{{ document.name }}</h4>
+    <div class="button-group">
+      <a class="btn btn-primary" [href]="document.url" target="_blank">View</a>
+      <a class="btn btn-info">Edit</a>
+      <a class="btn btn-danger">Delete</a>
     </div>
   </div>
+
   <div class="panel-body">
-    <div class="pad-left-right">
-      <div class="row">
-        <label>Description:</label>
-        <span class="label-value">{{ document?.description }}</span>
-      </div>
-      <br>
-      <div class="row">
-        <label>URL:</label>
-        <span class="label-value">
-          <a [href]="document?.url" target="_blank">{{ document?.url }}</a>
-        </span>
-      </div>
-    </div>
+    <p><strong>Description:</strong> {{ document.description }}</p>
+    <p *ngIf="document.url">
+      <strong>URL:</strong> <a [href]="document.url" target="_blank">{{ document.url }}</a>
+    </p>
   </div>
 </div>

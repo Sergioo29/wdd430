@@ -1,6 +1,8 @@
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DocumentService } from '../document.service';
 import { Document } from '../document.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-document-detail',
@@ -9,6 +11,21 @@ import { Document } from '../document.model';
   templateUrl: './document-detail.component.html',
   styleUrls: ['./document-detail.component.css']
 })
-export class DocumentDetailComponent {
-  @Input() document!: Document; // Define document as an input property
+export class DocumentDetailComponent implements OnInit {
+  document: Document | null = null; // ✅ Allow null initially
+
+  constructor(
+    private documentService: DocumentService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id'); // ✅ Get ID from route
+      if (id) {
+        this.document = this.documentService.getDocument(id) || null; // ✅ Handle missing document
+      }
+    });
+  }
 }
