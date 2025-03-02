@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { Contact } from './contact.model';
 import { ContactService } from './contact.service';
 import { ContactListComponent } from './contact-list/contact-list.component'; 
@@ -8,7 +9,7 @@ import { ContactDetailComponent } from './contact-detail/contact-detail.componen
 @Component({
   selector: 'app-contacts',
   standalone: true,
-  imports: [CommonModule, ContactListComponent, ContactDetailComponent], // ✅ Add imports
+  imports: [CommonModule, RouterModule, ContactListComponent, ContactDetailComponent], // ✅ Add imports
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.css']
 })
