@@ -21,4 +21,9 @@ export class ContactService {
   getContact(id: string): Contact | null {
     return this.contacts.find(contact => contact.id === id) || null;
   }
+
+  deleteContact(id: string): void {
+    this.contacts = this.contacts.filter(contact => contact.id !== id);
+  }
+  
 }
