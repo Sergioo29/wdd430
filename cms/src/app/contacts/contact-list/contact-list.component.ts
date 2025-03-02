@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core'; // ✅ Import OnDestroy
+import { Subscription } from 'rxjs'; // ✅ Import Subscription
+import { Contact } from '../contact.model';
+import { ContactService } from '../contact.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Contact } from '../contact.model';
 import { ContactItemComponent } from '../contact-item/contact-item.component';
-import { ContactService } from '../contact.service';
 
 @Component({
   selector: 'app-contact-list',
@@ -12,12 +13,22 @@ import { ContactService } from '../contact.service';
   templateUrl: './contact-list.component.html',
   styleUrls: ['./contact-list.component.css']
 })
-export class ContactListComponent implements OnInit {
-  contacts: Contact[] = []; // Initialize with an empty array
+export class ContactListComponent implements OnInit, OnDestroy {
+  contacts: Contact[] = [];
+  private subscription!: Subscription; // ✅ Store the subscription
 
   constructor(private contactService: ContactService) {}
 
   ngOnInit() {
-    this.contacts = this.contactService.getContacts(); // Fetch contacts from service
+    this.contacts = this.contactService.getContacts();
+    this.subscription = this.contactService.contactListChangedEvent.subscribe(
+      (contacts: Contact[]) => {
+        this.contacts = contacts;
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe(); // ✅ Prevent memory leaks
   }
 }

@@ -22,8 +22,11 @@ export class ContactService {
     return this.contacts.find(contact => contact.id === id) || null;
   }
 
+  contactListChangedEvent = new Subject<Contact[]>();
+
   deleteContact(id: string): void {
     this.contacts = this.contacts.filter(contact => contact.id !== id);
+    this.contactListChangedEvent.next(this.contacts.slice()); // Notify subscribers
   }
   
 }
