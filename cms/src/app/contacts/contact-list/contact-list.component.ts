@@ -11,26 +11,26 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [CommonModule, RouterModule, ContactItemComponent],
   templateUrl: './contact-list.component.html',
-  styleUrls: ['./contact-list.component.css'],
+  styleUrls: ['./contact-list.component.css']
 })
 export class ContactListComponent implements OnInit, OnDestroy {
   contacts: Contact[] = [];
-  private contactListChangedSub!: Subscription; // ✅ Holds the subscription
+  private contactListChangedSub!: Subscription; // Holds the subscription
 
   constructor(private contactService: ContactService) {}
 
   ngOnInit() {
     this.contacts = this.contactService.getContacts();
 
-    // ✅ Subscribe to contact list changes
-    this.contactListChangedSub = this.contactService.contactListChangedEvent.subscribe(
-      (updatedContacts: Contact[]) => {
+    // Subscribe to contact list changes
+    this.contactListChangedSub = this.contactService.contactListChanged.subscribe(
+      (updatedContacts) => {
         this.contacts = updatedContacts;
       }
     );
   }
 
   ngOnDestroy() {
-    this.contactListChangedSub.unsubscribe(); // ✅ Prevent memory leaks
+    this.contactListChangedSub.unsubscribe(); // Prevent memory leaks
   }
 }
