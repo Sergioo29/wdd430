@@ -1,15 +1,15 @@
-import { Injectable, EventEmitter } from '@angular/core'; 
+import { Injectable, EventEmitter } from '@angular/core';
 import { Document } from './document.model';
 import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 import { Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DocumentService {
   documents: Document[] = [];
   documentSelectedEvent = new EventEmitter<Document>(); // ✅ Used for selection
-  documentListChanged = new Subject<Document[]>(); // ✅ Used for list updates
+  documentListChangedEvent = new Subject<Document[]>(); // ✅ Corrected name
 
   constructor() {
     this.documents = MOCKDOCUMENTS;
@@ -20,11 +20,23 @@ export class DocumentService {
   }
 
   getDocument(id: string): Document | null {
-    return this.documents.find(doc => doc.id === id) || null;
+    return this.documents.find((doc) => doc.id === id) || null;
+  }
+
+  addDocument(newDocument: Document) {
+    this.documents.push(newDocument);
+    this.documentListChangedEvent.next([...this.documents]); // ✅ Notify subscribers
+  }
+
+  updateDocument(index: number, updatedDocument: Document) {
+    if (index >= 0 && index < this.documents.length) {
+      this.documents[index] = updatedDocument;
+      this.documentListChangedEvent.next([...this.documents]); // ✅ Notify subscribers
+    }
   }
 
   deleteDocument(id: string) {
-    this.documents = this.documents.filter(doc => doc.id !== id);
-    this.documentListChanged.next([...this.documents]); // ✅ Notify document-list
+    this.documents = this.documents.filter((doc) => doc.id !== id);
+    this.documentListChangedEvent.next([...this.documents]); // ✅ Notify subscribers
   }
 }

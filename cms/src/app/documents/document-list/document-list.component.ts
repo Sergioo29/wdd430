@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'; 
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Document } from '../document.model';
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [CommonModule, RouterModule, DocumentItemComponent],
   templateUrl: './document-list.component.html',
-  styleUrls: ['./document-list.component.css']
+  styleUrls: ['./document-list.component.css'],
 })
 export class DocumentListComponent implements OnInit, OnDestroy {
   documents: Document[] = [];
@@ -23,8 +23,8 @@ export class DocumentListComponent implements OnInit, OnDestroy {
     this.documents = this.documentService.getDocuments();
 
     // ✅ Subscribe to document list changes
-    this.documentListChangedSub = this.documentService.documentListChanged.subscribe(
-      (updatedDocuments) => {
+    this.documentListChangedSub = this.documentService.documentListChangedEvent.subscribe(
+      (updatedDocuments: Document[]) => {
         this.documents = updatedDocuments;
       }
     );
