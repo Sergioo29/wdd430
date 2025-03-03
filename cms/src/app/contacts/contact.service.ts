@@ -1,32 +1,42 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Contact } from './contact.model';
 import { MOCKCONTACTS } from './MOCKCONTACTS';
-import { Subject } from 'rxjs'; // ✅ Import Subject instead of EventEmitter
+import { Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ContactService {
   contacts: Contact[] = [];
-  contactSelectedEvent = new Subject<Contact>(); // ✅ Use Subject instead of EventEmitter
+  contactSelectedEvent = new EventEmitter<Contact>(); // ✅ Used for selection
+  contactListChangedEvent = new Subject<Contact[]>(); // ✅ Used for list updates
 
   constructor() {
     this.contacts = MOCKCONTACTS;
   }
 
   getContacts(): Contact[] {
-    return this.contacts.slice(); // Returns a copy of the contacts array
+    return this.contacts.slice(); // ✅ Return a copy to prevent direct modification
   }
 
   getContact(id: string): Contact | null {
-    return this.contacts.find(contact => contact.id === id) || null;
+    return this.contacts.find((contact) => contact.id === id) || null;
   }
 
-  contactListChangedEvent = new Subject<Contact[]>();
-
-  deleteContact(id: string): void {
-    this.contacts = this.contacts.filter(contact => contact.id !== id);
-    this.contactListChangedEvent.next(this.contacts.slice()); // Notify subscribers
+  addContact(newContact: Contact) {
+    this.contacts.push(newContact);
+    this.contactListChangedEvent.next([...this.contacts]); // ✅ Notify subscribers
   }
-  
+
+  updateContact(index: number, updatedContact: Contact) {
+    if (index >= 0 && index < this.contacts.length) {
+      this.contacts[index] = updatedContact;
+      this.contactListChangedEvent.next([...this.contacts]); // ✅ Notify subscribers
+    }
+  }
+
+  deleteContact(id: string) {
+    this.contacts = this.contacts.filter((contact) => contact.id !== id);
+    this.contactListChangedEvent.next([...this.contacts]); // ✅ Notify subscribers
+  }
 }
