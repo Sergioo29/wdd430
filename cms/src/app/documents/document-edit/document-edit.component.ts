@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'cms-document-edit',
+  selector: 'app-document-edit',
   standalone: true,
-  imports: [],
   templateUrl: './document-edit.component.html',
-  styleUrl: './document-edit.component.css'
+  styleUrls: ['./document-edit.component.css']
 })
 export class DocumentEditComponent {
-
+  
+  onCancel(): void {
+    // Logic to handle cancel action (e.g., navigate back or reset form)
+    console.log("Document edit canceled");
+  }
 }
