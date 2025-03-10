@@ -1,52 +1,45 @@
-<div class="panel panel-default">
-  <div class="panel-body">
-
-    <form id="document-edit">
-      <div class="row">
-        <div class="col-sm-12 form-group">
-          <label for="name">Document Title:</label>
-          <input
-            type="text"
-            id="name"
-            class="form-control"
-            size="120"
-            max="120">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-12 form-group">
-          <label for="description">Document Description:</label>
-          <input
-            type="text"
-            id="description"
-            class="form-control"
-            size="120"
-            max="255">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-12 form-group">
-          <label for="url">Document URL:</label>
-          <input
-            type="text"
-            id="url"
-            class="form-control"
-            size="150"
-            max="255">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-12 btn-toolbar">
-          <button class="btn btn-success" type="submit" >Save</button>
-          <button class="btn btn-primary" type="button" (click)="onCancel()">Cancel</button>
-        </div>
-      </div>
-
-    </form>
-
+<form #f="ngForm" (ngSubmit)="onSubmit(f)">
+  <!-- Document Title Field -->
+  <div class="form-group">
+    <label for="name">Document Title</label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      class="form-control"
+      required
+      #name="ngModel"
+      [(ngModel)]="document.name"
+    />
+    <div *ngIf="name.invalid && name.touched" class="alert alert-danger">
+      The Document Title is required.
+    </div>
   </div>
-</div>
 
+  <!-- Document URL Field -->
+  <div class="form-group">
+    <label for="url">Document URL</label>
+    <input
+      type="text"
+      id="url"
+      name="url"
+      class="form-control"
+      required
+      #url="ngModel"
+      [(ngModel)]="document.url"
+    />
+    <div *ngIf="url.invalid && url.touched" class="alert alert-danger">
+      The Document URL is required.
+    </div>
+  </div>
+
+  <!-- Error Message for both fields -->
+  <div *ngIf="(name.invalid || url.invalid) && (name.touched || url.touched)" class="alert alert-danger">
+    The Document Title and Document URL are required fields.
+  </div>
+
+  <!-- Save Button -->
+  <button type="submit" class="btn btn-primary" [disabled]="f.invalid">
+    Save
+  </button>
+</form>
