@@ -39,7 +39,6 @@ export class DocumentService {
     return maxId;
   }
 
-  // ✅ Function to add a new document
   addDocument(newDocument: Document) {
     if (!newDocument) {
       return;

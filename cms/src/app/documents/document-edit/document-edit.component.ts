@@ -1,29 +1,82 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { NgForm, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Document } from '../document.model'; // Adjust path if needed
+import { Document } from '../document.model';
+import { DocumentService } from '../document.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-document-edit',
   standalone: true,
-  imports: [FormsModule, CommonModule], // Import FormsModule to use ngForm and ngModel
   templateUrl: './document-edit.component.html',
-  styleUrls: ['./document-edit.component.css']
+  styleUrls: ['./document-edit.component.css'],
+  imports: [CommonModule, FormsModule, RouterModule] // Import required modules
 })
-export class DocumentEditComponent {
-  originalDocument: Document | null = null; // Initialize to avoid TypeScript errors
-  document: Document = { 
-    id: '', 
-    name: '', 
-    url: '', 
-    description: '' // Added missing property
-  };
+export class DocumentEditComponent implements OnInit {
+  originalDocument!: Document;
+  document!: Document;
+  editMode: boolean = false;
+  id!: string;
 
-  onCancel(): void {
-    console.log("Document edit canceled");
+  constructor(
+    private documentService: DocumentService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit(): void {
+    this.route.params.subscribe((params: Params) => {
+      this.id = params['id'];
+  
+      if (!this.id) {
+        // If no ID, it's a new document → Initialize an empty document object
+        this.editMode = false;
+        this.document = new Document('', '', '', '');
+        return;
+      }
+  
+      const fetchedDocument = this.documentService.getDocument(this.id);
+      if (!fetchedDocument) {
+        return;
+      }
+  
+      this.originalDocument = fetchedDocument;
+      this.editMode = true;
+      this.document = JSON.parse(JSON.stringify(this.originalDocument));
+    });
   }
+  
+  
 
-  onSubmit(form: any): void {
-    console.log("Submitted form data:", form.value);
+  onSubmit(form: NgForm) {
+    if (form.invalid) {
+      return; // Prevent submission if the form is invalid
+    }
+  
+    const value = form.value; // Get values from form fields
+    const newDocument = new Document(
+      this.id,
+      value.name,
+      value.description,
+      value.url
+    );
+    console.log('Saving Document:', newDocument);
+
+  
+    if (this.editMode) {
+      this.documentService.updateDocument(this.originalDocument, newDocument);
+    } else {
+      this.documentService.addDocument(newDocument);
+    }
+  
+    this.router.navigate(['/documents']);
+    console.log('the after thing Saving Document:', newDocument);
+
+  }
+  
+
+  onCancel() {
+    this.router.navigate(['/documents']);
   }
 }
