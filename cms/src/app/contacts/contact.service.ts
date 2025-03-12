@@ -18,7 +18,7 @@ export class ContactService {
   }
 
   getContacts(): Contact[] {
-    return this.contacts.slice(); // Return a copy to prevent modification
+    return [...this.contacts]; // Return a copy to prevent modification
   }
 
   getContact(id: string): Contact | null {
@@ -48,21 +48,25 @@ export class ContactService {
     this.contactListChanged.next([...this.contacts]); // Notify changes
   }
 
-  updateContact(originalContact: Contact, newContact: Contact) {
-    if (!originalContact || !newContact) return;
+  updateContact(originalContact: Contact, newContact: Contact): void {
+    if (!originalContact || !newContact) {
+      return;
+    }
 
-    const pos = this.contacts.indexOf(originalContact);
-    if (pos < 0) return; // Contact not found
+    const pos = this.contacts.findIndex(c => c.id === originalContact.id);
+    if (pos < 0) {
+      return;
+    }
 
-    newContact.id = originalContact.id; // Keep the same ID
-    this.contacts[pos] = newContact;
+    // Update the contact at the found position
+    this.contacts[pos] = { ...newContact, id: originalContact.id };
 
-    this.contactListChanged.next([...this.contacts]); // Notify changes
+    // Emit event to update the list in UI
+    this.contactListChanged.next([...this.contacts]);
   }
 
   deleteContact(id: string) {
     this.contacts = this.contacts.filter(contact => contact.id !== id);
     this.contactListChanged.next([...this.contacts]); // Notify changes
   }
-  
 }
