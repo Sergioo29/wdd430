@@ -2,6 +2,9 @@
   <div class="panel-heading">
     <h3 class="panel-title">Contacts</h3>
 
+  
+
+
     <ng-container *ngFor="let contact of contacts">
       <app-contact-item 
         [contact]="contact" 
@@ -11,6 +14,19 @@
 
     <button class="btn btn-success" [routerLink]="['/contacts', 'new']">Create New Contact</button>
   </div>
+
+  <div class="searchBox">
+
+    <input type="text" [(ngModel)]="searchTerm" placeholder="Search Contacts   ⌕">
+
+  <ul>
+    <li *ngFor="let contact of contacts | contactsFilter: searchTerm">
+      {{ contact.name }}
+    </li>
+  </ul>
+
+  </div>
+  
 
   <div class="panel-body">
     <div *ngFor="let contact of contacts" class="media" [routerLink]="['/contacts', contact.id]">

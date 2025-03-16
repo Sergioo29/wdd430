@@ -3,16 +3,16 @@ import { Contact } from './contact.model';
 
 @Pipe({
   name: 'contactsFilter',
-  standalone: true // ✅ Make it standalone so it can be imported in a standalone component
+  standalone: true
 })
 export class ContactsFilterPipe implements PipeTransform {
   transform(contacts: Contact[], term: string): Contact[] {
-    if (!contacts || !term) {
-      return contacts; // Return all contacts if no search term is entered
+    if (!term || term.trim().length === 0) {
+      return []; // ✅ Return an empty array when there's no search term
     }
 
-    return contacts.filter(
-      (contact: Contact) => contact.name.toLowerCase().includes(term.toLowerCase())
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(term.toLowerCase())
     );
   }
 }
