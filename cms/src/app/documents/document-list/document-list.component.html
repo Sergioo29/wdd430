@@ -3,8 +3,8 @@
     <span class="h5">Documents</span>
     <a class="btn btn-success" [routerLink]="['/documents', 'new']">Add Document</a>
   </div>
-  <div class="card-body">
-    <div *ngFor="let document of documents">
+  <div class="card-body panel-body">
+    <div *ngFor="let document of documents" class="datest">
       <a [routerLink]="['/documents', document.id]" class="text-decoration-none">
         <app-document-item [document]="document"></app-document-item>
       </a>
