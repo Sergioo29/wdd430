@@ -15,16 +15,14 @@ import { Subscription } from 'rxjs';
 })
 export class DocumentListComponent implements OnInit, OnDestroy {
   documents: Document[] = [];
-  private documentListChangedSub!: Subscription; // ✅ Holds the subscription
+  private documentListChangedSub!: Subscription;
 
   constructor(private documentService: DocumentService) {}
 
   ngOnInit() {
-    this.documents = this.documentService.getDocuments();
+    this.documentService.fetchDocuments(); // ✅ Fetch from Firebase on load
 
-    // ✅ Subscribe to document list changes
     this.documentListChangedSub = this.documentService.documentListChanged.subscribe(
-
       (updatedDocuments: Document[]) => {
         this.documents = updatedDocuments;
       }
@@ -32,6 +30,6 @@ export class DocumentListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.documentListChangedSub.unsubscribe(); // ✅ Prevent memory leaks
+    this.documentListChangedSub.unsubscribe();
   }
 }

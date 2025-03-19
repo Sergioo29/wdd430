@@ -1,75 +1,84 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http'; // ✅ Import HttpClient
 import { Document } from './document.model';
-import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DocumentService {
-  documents: Document[] = [];
-  documentSelectedEvent = new EventEmitter<Document>(); // ✅ Used for selection
-  documentListChanged = new Subject<Document[]>(); // ✅ Used for list updates
-  maxDocumentId: number; // ✅ Stores the highest document ID
+  private firebaseUrl = 'https://wdd430-angular-cms-3f260-default-rtdb.firebaseio.com/documents.json'; // ✅ Firebase URL
 
-  constructor() {
-    this.documents = MOCKDOCUMENTS;
-    this.maxDocumentId = this.getMaxId(); // ✅ Initialize maxDocumentId
+  documents: Document[] = [];
+  documentListChanged = new Subject<Document[]>(); // ✅ Emits changes
+  maxDocumentId: number = 0; // ✅ Initialize max ID
+
+  constructor(private http: HttpClient) {} // ✅ Inject HttpClient
+
+  // ✅ Fetch documents from Firebase
+  fetchDocuments() {
+    this.http.get<Document[]>(this.firebaseUrl).subscribe(
+      (fetchedDocuments) => {
+        this.documents = fetchedDocuments || []; // ✅ Handle null response
+        this.maxDocumentId = this.getMaxId(); // ✅ Update max ID
+        this.documentListChanged.next([...this.documents]); // ✅ Notify updates
+      },
+      (error) => {
+        console.error('Error fetching documents:', error);
+      }
+    );
   }
 
   getDocuments(): Document[] {
-    return this.documents.slice(); // ✅ Return a copy to prevent direct modification
+    return [...this.documents]; // ✅ Return a copy to prevent mutation
   }
 
   getDocument(id: string): Document | null {
     return this.documents.find((doc) => doc.id === id) || null;
   }
 
-  // ✅ Function to get the max document ID
-  getMaxId(): number {
+  private getMaxId(): number {
     let maxId = 0;
-
     for (let document of this.documents) {
-      let currentId = parseInt(document.id, 10); // Convert ID to number
+      let currentId = parseInt(document.id, 10);
       if (currentId > maxId) {
         maxId = currentId;
       }
     }
-
     return maxId;
   }
 
   addDocument(newDocument: Document) {
-    if (!newDocument) {
-      return;
-    }
+    if (!newDocument) return;
 
-    this.maxDocumentId++; // Increment max ID
-    newDocument.id = this.maxDocumentId.toString(); // Assign new unique ID
-    this.documents.push(newDocument); // Add to list
+    this.maxDocumentId++;
+    newDocument.id = this.maxDocumentId.toString();
+    this.documents.push(newDocument);
 
-    this.documentListChanged.next(this.documents.slice()); // Notify subscribers
+    this.storeDocuments(); // ✅ Save to Firebase
   }
 
-  // ✅ Function to update an existing document
   updateDocument(originalDocument: Document, newDocument: Document) {
-    if (!originalDocument || !newDocument) {
-      return;
-    }
+    if (!originalDocument || !newDocument) return;
 
     const pos = this.documents.indexOf(originalDocument);
-    if (pos < 0) {
-      return; // If original document is not found, exit
-    }
+    if (pos < 0) return;
 
-    newDocument.id = originalDocument.id; // Keep the same ID
-    this.documents[pos] = newDocument; // Replace old document
+    newDocument.id = originalDocument.id;
+    this.documents[pos] = newDocument;
 
-    this.documentListChanged.next(this.documents.slice()); // Notify subscribers
+    this.storeDocuments(); // ✅ Save to Firebase
   }
 
   deleteDocument(id: string) {
     this.documents = this.documents.filter((doc) => doc.id !== id);
-    this.documentListChanged.next([...this.documents]); // ✅ Notify document-list
+    this.storeDocuments(); // ✅ Save to Firebase
+  }
+
+  // ✅ Store documents in Firebase
+  private storeDocuments() {
+    this.http.put(this.firebaseUrl, this.documents).subscribe(() => {
+      this.documentListChanged.next([...this.documents]); // ✅ Notify updates
+    });
   }
 }

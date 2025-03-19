@@ -1,13 +1,13 @@
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <div class="row pad-left-right">
-      <span class="pull-left title">Documents</span>
-      <a class="btn btn-success pull-right" [routerLink]="['/documents', 'new']">Add Document</a>
-    </div>
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="h5">Documents</span>
+    <a class="btn btn-success" [routerLink]="['/documents', 'new']">Add Document</a>
   </div>
-  <div class="panel-body">
-    <div *ngFor="let document of documents" class="datest" [routerLink]="['/documents', document.id]">
-      <app-document-item [document]="document"></app-document-item>
+  <div class="card-body">
+    <div *ngFor="let document of documents">
+      <a [routerLink]="['/documents', document.id]" class="text-decoration-none">
+        <app-document-item [document]="document"></app-document-item>
+      </a>
     </div>
   </div>
 </div>
