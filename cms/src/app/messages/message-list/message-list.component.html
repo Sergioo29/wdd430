@@ -1,13 +1,11 @@
 <div class="row">
-   <div class="col-md-8">
-     <app-message-edit></app-message-edit>
-     <div class="list-group">
-       <app-message-item
-         *ngFor="let message of messages"
-         [message]="message"
-       ></app-message-item>
-     </div>
-   </div>
- </div>
-
- 
+  <div class="col-md-8">
+    <app-message-edit></app-message-edit>
+    <div class="list-group">
+      <app-message-item
+        *ngFor="let message of messages || []"
+        [message]="message"
+      ></app-message-item>
+    </div>
+  </div>
+</div>
