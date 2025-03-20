@@ -2,9 +2,6 @@
   <div class="panel-heading">
     <h3 class="panel-title">Contacts</h3>
 
-  
-
-
     <ng-container *ngFor="let contact of contacts">
       <app-contact-item 
         [contact]="contact" 
@@ -16,17 +13,14 @@
   </div>
 
   <div class="searchBox">
+    <input type="text" [(ngModel)]="searchTerm" (input)="applyFilter()" placeholder="Search Contacts ⌕">
 
-    <input type="text" [(ngModel)]="searchTerm" placeholder="Search Contacts   ⌕">
-
-  <ul>
-    <li *ngFor="let contact of contacts | contactsFilter: searchTerm">
-      {{ contact.name }}
-    </li>
-  </ul>
-
+    <ul>
+      <li *ngFor="let contact of filteredContacts">
+        {{ contact.name }}
+      </li>
+    </ul>
   </div>
-  
 
   <div class="panel-body">
     <div *ngFor="let contact of contacts" class="media" [routerLink]="['/contacts', contact.id]">

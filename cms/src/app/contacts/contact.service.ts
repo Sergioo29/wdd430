@@ -1,7 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Contact } from './contact.model';
-import { MOCKCONTACTS } from './MOCKCONTACTS';
 import { Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +10,30 @@ export class ContactService {
   contacts: Contact[] = [];
   contactSelectedEvent = new EventEmitter<Contact>(); // Used for selection
   contactListChanged = new Subject<Contact[]>(); // Used for list updates
-  maxContactId: number; // Stores the highest ID
+  private firebaseUrl = 'https://wdd430-angular-cms-3f260-default-rtdb.firebaseio.com/contacts.json';
 
-  constructor() {
-    this.contacts = MOCKCONTACTS;
-    this.maxContactId = this.getMaxId(); // Initialize maxContactId
+  constructor(private http: HttpClient) {
+    this.fetchContacts();
+  }
+
+  fetchContacts() {
+    this.http.get<{ [key: string]: Contact }>(this.firebaseUrl).subscribe(
+      (responseData) => {
+        const contactsArray: Contact[] = [];
+
+        for (const key in responseData) {
+          if (responseData.hasOwnProperty(key)) {
+            contactsArray.push({ ...responseData[key], id: key }); // Store Firebase key as ID
+          }
+        }
+
+        this.contacts = contactsArray;
+        this.contactListChanged.next([...this.contacts]); // Emit updated list
+      },
+      (error) => {
+        console.error('Error fetching contacts:', error);
+      }
+    );
   }
 
   getContacts(): Contact[] {
@@ -25,48 +44,51 @@ export class ContactService {
     return this.contacts.find(contact => contact.id === id) || null;
   }
 
-  getMaxId(): number {
-    let maxId = 0;
-
-    for (let contact of this.contacts) {
-      const currentId = parseInt(contact.id);
-      if (currentId > maxId) {
-        maxId = currentId;
-      }
-    }
-
-    return maxId;
-  }
-
   addContact(newContact: Contact) {
     if (!newContact) return;
 
-    this.maxContactId++;
-    newContact.id = this.maxContactId.toString(); // Assign new unique ID
-    this.contacts.push(newContact);
-
-    this.contactListChanged.next([...this.contacts]); // Notify changes
+    this.http.post<{ name: string }>(this.firebaseUrl, newContact).subscribe(
+      (response) => {
+        newContact.id = response.name; // Firebase assigns a unique ID
+        this.contacts.push(newContact);
+        this.contactListChanged.next([...this.contacts]); // Notify changes
+      },
+      (error) => {
+        console.error('Error adding contact:', error);
+      }
+    );
   }
 
   updateContact(originalContact: Contact, newContact: Contact): void {
-    if (!originalContact || !newContact) {
-      return;
-    }
+    if (!originalContact || !newContact) return;
 
-    const pos = this.contacts.findIndex(c => c.id === originalContact.id);
-    if (pos < 0) {
-      return;
-    }
+    const contactIndex = this.contacts.findIndex(c => c.id === originalContact.id);
+    if (contactIndex < 0) return;
 
-    // Update the contact at the found position
-    this.contacts[pos] = { ...newContact, id: originalContact.id };
+    const updateUrl = `https://wdd430-angular-cms-3f260-default-rtdb.firebaseio.com/contacts/${originalContact.id}.json`;
 
-    // Emit event to update the list in UI
-    this.contactListChanged.next([...this.contacts]);
+    this.http.put(updateUrl, newContact).subscribe(
+      () => {
+        this.contacts[contactIndex] = { ...newContact, id: originalContact.id };
+        this.contactListChanged.next([...this.contacts]); // Emit updated list
+      },
+      (error) => {
+        console.error('Error updating contact:', error);
+      }
+    );
   }
 
   deleteContact(id: string) {
-    this.contacts = this.contacts.filter(contact => contact.id !== id);
-    this.contactListChanged.next([...this.contacts]); // Notify changes
+    const deleteUrl = `https://wdd430-angular-cms-3f260-default-rtdb.firebaseio.com/contacts/${id}.json`;
+
+    this.http.delete(deleteUrl).subscribe(
+      () => {
+        this.contacts = this.contacts.filter(contact => contact.id !== id);
+        this.contactListChanged.next([...this.contacts]); // Notify changes
+      },
+      (error) => {
+        console.error('Error deleting contact:', error);
+      }
+    );
   }
 }
