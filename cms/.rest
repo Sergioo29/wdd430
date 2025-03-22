@@ -1,0 +1,5 @@
+GET http://localhost:3000/documents
+
+GET http://localhost:3000/messages
+
+GET http://localhost:3000/contacts
