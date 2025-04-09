@@ -1,0 +1,239 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+html{
+    padding: 0px;
+    margin: 0px;
+}
+
+body{
+    font-family: sans-serif;
+    margin: 0px;
+    padding-bottom: 5% ;
+}
+
+main{
+    padding: 0px 5%;
+}
+    
+header{
+    background-color: rgb(96, 96, 96);
+    padding-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+
+}
+
+header h1{
+    font-weight: 800;
+    justify-self: center;
+    align-self: center;
+    color: white;
+    border: 1px lightblue;
+    border-radius: 50%;
+    width: 100%;
+    padding: 25px;
+    margin: 0px;
+    text-align: center;
+}
+
+header img{
+    justify-self: right;
+    align-self: center;
+    width: 90%;
+}
+
+nav{
+    background-color: black;
+}
+
+nav ul{
+    display: flex;
+    justify-content: space-around;
+    text-decoration: none;
+    margin: 0px;
+
+}
+nav li{
+    padding: 1%;
+    width: 100%;
+    text-align: center;
+    transition: all .5s;
+
+    
+}
+nav li:hover{
+    background-color: lightblue;
+}
+
+nav a{
+    text-decoration: none;
+    color: white;
+}
+
+main ul{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+}
+
+main li{
+    list-style: none;
+    padding: 20px;
+    border: 2px solid black;
+    background-color: lightblue;
+}
+
+
+/* For HOME PAGE ------------- */
+
+.homepageTitle{
+    padding-top: 10%;
+    text-align: center;
+
+}
+
+.loggedMessage{
+    text-align: center;
+    margin-top: 5%;
+}
+
+.homeButton{
+    background-color: darkblue;
+    text-decoration: none;
+    color: white;
+    padding: 5px 10px;
+    margin-left: 47%;
+    transition: all .5s;
+
+}
+.homeButton:hover{
+    background-color: lightblue;
+    color: black;
+}
+
+/* DOCUMENT PAGE ------------*/
+
+.docEditOption{
+    display: flex;
+    justify-content: space-around;
+}
+
+.AddButton{
+    background-color: darkblue;
+    color: white;
+    padding: 5px 10px;
+    margin-left: 5%;
+    text-decoration: none;
+    transition: all .5s;
+}
+
+.EditButton{
+    background-color: darkgreen;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    transition: all .5s;
+
+}
+
+.DeleteButton{
+    background-color: darkred;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    transition: all .5s;
+
+}
+
+.AddButton:hover{
+    background-color: lightblue;
+    padding: 7px 15px;
+    color: black;
+}
+
+.EditButton:hover, .DeleteButton:hover{
+    background-color: white;
+    color: black;
+}
+
+.nav-list {
+    list-style-type: none; 
+    margin: 0;             
+    padding: 0;            
+    display: flex;
+             
+}
+
+/* FORMS ------------------*/
+
+form{
+text-align: center;
+margin: 1% 10%;
+}
+
+[name=title]{
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+[name=content]{
+    width: 100%;
+    height: 100%;
+}
+
+.SubmitFormButton{
+    background-color: darkblue;
+    color: white;
+    padding: 5px 10px;
+    transition: all .5s;
+}
+.SubmitFormButton:hover{
+    background-color: lightblue;
+    color: black;
+}
+
+#speak-btn {
+    background-color: rgb(96, 96, 96)   ;
+    color: white;
+    padding: 5px 10px;
+    margin-bottom: 20px;
+}
+#speak-btn:hover{
+    background-color: lightblue;
+    color: black;
+}
+
+
+@media screen and (max-width: 600px){
+
+    .logo{
+        width: 40%;
+        margin-left: 30%;
+    }
+   
+
+    .main-header{
+        display: block;
+
+    }
+
+    .main-nav ul{
+        display: block;
+        padding: 20px;
+    
+    }
+
+    .documentList{
+        grid-template-columns: 1fr;
+    }
+
+    .homeButton, .AddButton, .EditButton, .DeleteButton, .SubmitFormButton, #speak-btn{
+        padding: 10px 20px;
+    }
+}
