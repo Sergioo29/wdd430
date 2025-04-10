@@ -15,7 +15,7 @@
         <h1>Your Documents</h1>
         <br>
         
-        <a href="/documents/new" class="AddButton">+ New</a>
+        <a href="/new" class="AddButton">+ New</a>
 
         <br>
         <br>
@@ -31,8 +31,12 @@
                 <br>
                 
                 <div class="docEditOption"> 
-                    <a href="/documents/<%= document._id %>/edit" class="EditButton">Edit</a>
-                    <a href="#" class="DeleteButton" data-id="<%= document._id %>">Delete</a>
+                    <a href="/<%= document._id %>/edit" class="EditButton">Edit</a>
+
+                    <!-- Delete Button Form -->
+                    <form action="/<%= document._id %>?_method=DELETE" method="POST" style="display:inline;">
+                        <button type="submit" class="DeleteButton" onclick="return confirm('Are you sure you want to delete this document?')">Delete</button>
+                    </form>
                 </div>
 
                 </li>
@@ -40,7 +44,8 @@
         </ul>
     </main>
 
-    <script src="/js/delete.js" defer></script>
+    <!-- Remove this line if it's not needed (if you're using the form submission) -->
+    <!-- <script src="/js/delete.js" defer></script> -->
 
 </body>
 </html>

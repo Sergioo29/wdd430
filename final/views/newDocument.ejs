@@ -15,7 +15,7 @@
         <h1>Create a New Document</h1>
         <br>
 
-        <form action="/documents/" method="POST">
+        <form action="/" method="POST">
             <div>
                 <label for="title">Title:</label>
                 <input type="text" id="title" name="title" required>
@@ -31,16 +31,10 @@
     
     <script>
         document.getElementById('speak-btn').addEventListener('click', function () {
-    const content = document.getElementById('content').value; // Get the text from the textarea
-    const speech = new SpeechSynthesisUtterance(content);     // Create a speech synthesis object
-    speech.lang = 'en-US';                                   // Set language (modify as needed)
-    window.speechSynthesis.speak(speech);                    // Speak the text
-
-    if (!window.speechSynthesis) {
-    alert('Speech synthesis is not supported in this browser.');
-} else {
-    console.log('Speech synthesis is supported.');
-}
+    const content = document.getElementById('content').value; 
+    const speech = new SpeechSynthesisUtterance(content);     
+    speech.lang = 'en-US';                                   
+    window.speechSynthesis.speak(speech);                    
 
 });
 
