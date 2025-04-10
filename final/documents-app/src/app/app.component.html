@@ -1,14 +1,20 @@
-<!-- src/app/app.component.html -->
+<header>
+  <h1>WDD430</h1>
+  <h1>Sergio's Final Project</h1>
+  <div></div>
+  
+</header>
 
-<div *ngIf="documents.length > 0; else noDocuments">
-  <h1>Documents</h1>
-  <ul>
-    <li *ngFor="let document of documents">
-      {{ document.name }}
-    </li>
-  </ul>
-</div>
+<h1>Your Documents</h1>
 
-<ng-template #noDocuments>
-  <p>No documents found.</p>
-</ng-template>
+<button class="new" (click)="addDocument()">+ New </button>
+
+<ul>
+  <li *ngFor="let document of documents">
+    <strong>{{ document.title }}</strong>
+    <p>{{ document.content }}</p>
+    <button class="edit" (click)="editDocument(document)">Edit</button>
+    <button class="delete" (click)="deleteDocument(document._id)">Delete</button>
+
+  </li>
+</ul>

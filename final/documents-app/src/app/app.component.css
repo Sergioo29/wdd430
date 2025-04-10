@@ -1,0 +1,47 @@
+
+header{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    background-color: rgb(113, 113, 113);
+    font-family: sans-serif;
+    font-weight: bolder;
+    color: white;
+    justify-items: center;
+}
+
+ul{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+li{
+    list-style: none;
+    background-color: rgb(175, 215, 246);
+    border: 2px solid black;
+    padding: 10px;
+}
+
+button{
+    padding: 5px;
+}
+
+li button{
+margin: 5px 20px;
+}
+
+.new{
+    margin-left: 5%;
+    color: white;
+    background-color: blue;
+}
+
+.edit{
+    color: white;
+    background-color: green;
+}
+
+.delete{
+    color: white;
+    background-color: darkred;
+}
