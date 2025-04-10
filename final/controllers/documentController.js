@@ -1,15 +1,13 @@
 const { get } = require('mongoose');
 const mongodb = require('../database/connect.js');
 const { MongoClient, ObjectId } = require('mongodb');
-
 const controllers = {}
-
 
 //-----------------------------------------------------------------------
 
 controllers.getAllDocuments = async (req, res, next) => {
   try {
-    const result = await mongodb.getDb().db('WordProc').collection('documents').find();
+    const result = await mongodb.getDb().db('WDD430Final').collection('documents').find();
     const documents = await result.toArray();
 
     // Check the Accept header to determine the response format

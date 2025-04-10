@@ -1,17 +1,30 @@
-const router = require('express').Router();
-const controller = require('../controllers/baseController.js');
-const documentsRouter = require('./documents.js'); // Import the documents router
+const express = require('express');
+const router = express.Router();
+const documentController = require('../controllers/documentController.js');
+const mongodb = require('../database/connect.js');
+const { ObjectId } = require('mongodb');  // <-- Fix here
+const validate = require('../middleware/validate.js');
 
-// GET routes -----------------------------------
-router.get('/', controller.getHomepage);
+router.get('/', documentController.getAllDocuments);
 
-router.use('/documents', (req, res, next) => {
-    if (req.oidc.isAuthenticated()) {
-        documentsRouter(req, res, next); // Pass the request to the documents router
-    } else {
-        res.status(401).render('./blockedPage.ejs'); // Render the blocked page for unauthenticated users
-    }
-});
+router.get('/new', (req, res) => { res.render('newDocument');});
 
-// EXPORT -----------------------------------------
+router.post('/', documentController.addDocument);
+
+router.get('/:id/edit', async (req, res) => {
+  const documentId = req.params.id;
+  const db = mongodb.getDb().db('WordProc');
+  const document = await db.collection('documents').findOne({ _id: new ObjectId(documentId) });  // <-- Fix here
+
+  if (document) {
+    res.render('editDocument', { document });
+  } else {
+    res.status(404).send('Document not found');
+  }
+});  
+
+router.put('/:id', documentController.editDocument);
+
+router.delete('/:id', documentController.deleteDocument);
+
 module.exports = router;
