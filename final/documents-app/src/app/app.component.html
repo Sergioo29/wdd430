@@ -1,0 +1,14 @@
+<!-- src/app/app.component.html -->
+
+<div *ngIf="documents.length > 0; else noDocuments">
+  <h1>Documents</h1>
+  <ul>
+    <li *ngFor="let document of documents">
+      {{ document.name }}
+    </li>
+  </ul>
+</div>
+
+<ng-template #noDocuments>
+  <p>No documents found.</p>
+</ng-template>
